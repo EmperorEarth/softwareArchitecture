@@ -19,7 +19,6 @@ public class MyGame extends ActionBarActivity {
         setContentView(game);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -38,7 +37,6 @@ public class MyGame extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

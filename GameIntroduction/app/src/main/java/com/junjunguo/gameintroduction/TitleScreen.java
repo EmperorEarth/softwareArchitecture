@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import sheep.game.Sprite;
 import sheep.game.State;
 import sheep.graphics.Image;
@@ -17,10 +20,9 @@ public class TitleScreen extends State {
 
     private Image heliR = new Image(R.drawable.helicopterright);
     private Image heliL = new Image(R.drawable.helicopterleft);
-
     private Image wallVerticalImg = new Image(R.drawable.wall_vertical);
     private Image bgImage = new Image(R.drawable.bg800x1200);
-    private Sprite asprite, westWall, backSprite, bsprite;
+    private Sprite asprite, westWall, backSprite, bsprite, csprite, dsprite, esprite, fsprite, gsprite;
     private Paint postext;
     private String string = "";
     private int x, y;
@@ -33,9 +35,9 @@ public class TitleScreen extends State {
         westWall.setPosition(4, 215);
         asprite.setPosition(300, 120);
         bsprite.setPosition(200, 420);
-//        bsprite.setSpeed(50, 70);
 
-
+        // Animation right to left:
+        addAnimationSprites();
         postext = new Paint();
         postext.setStyle(Paint.Style.FILL);
         postext.setTextSize(20);
@@ -57,7 +59,70 @@ public class TitleScreen extends State {
                 return false;
             }
         });
+
+        startAnimateSprite();
     }
+
+    /**
+     * use Canvas to draw
+     *
+     * @param canvas
+     */
+    public void draw(Canvas canvas) {
+        backSprite.draw(canvas);
+        westWall.draw(canvas);
+        asprite.draw(canvas);
+        bsprite.draw(canvas);
+
+        csprite.draw(canvas);
+        dsprite.draw(canvas);
+        esprite.draw(canvas);
+//        fsprite.draw(canvas);
+//        gsprite.draw(canvas);
+//        imageView.draw(canvas);
+
+        canvas.drawText(string, 20, 20, postext);
+    }
+
+    /**
+     * a loop method
+     *
+     * @param dt
+     */
+    public void update(float dt) {
+
+        moveto();
+        //Task 2: show position:
+        string = String.format("%2$10.1f %1$10.1f", asprite.getX(), asprite.getY());
+        randomMove(bsprite);
+
+        direction(asprite);
+        direction(bsprite);
+
+        westWall.update(dt);
+        asprite.update(dt);
+        bsprite.update(dt);
+
+        csprite.update(dt);
+        dsprite.update(dt);
+        esprite.update(dt);
+//        fsprite.update(dt);
+//        gsprite.update(dt);
+    }
+
+    /**
+     * TASK 1: direction: move right or left
+     *
+     * @param sprite
+     */
+    private void direction(Sprite sprite) {
+        if (sprite.getSpeed().getX() > 0) {
+            sprite.setView(heliR);
+        } else {
+            sprite.setView(heliL);
+        }
+    }
+
 
     /**
      * TASK 2: control the movement
@@ -85,8 +150,48 @@ public class TitleScreen extends State {
         asprite.setSpeed(sx, sy);
     }
 
+    /**
+     * TASK 3 animation
+     */
+    private void addAnimationSprites() {
+        csprite = new Sprite(heliL);
+        dsprite = new Sprite(heliL);
+        esprite = new Sprite(heliL);
+//        fsprite = new Sprite(heliL);
+//        gsprite = new Sprite(heliL);
+
+        csprite.setPosition(128, 128);
+        dsprite.setPosition(354, 128);
+        esprite.setPosition(590, 128);
+//        fsprite.setPosition(512, 428);
+//        gsprite.setPosition(640, 528);
+    }
+
+    private void startAnimateSprite() {
+//        Handler handler = new Handler();
+//        handler.postDelayed(,1000);
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override public void run() {
+
+            }
+        };
+//        ObjectAnimator animation = new ObjectAnimator();
+//        animation.setObjectValues(csprite,dsprite,esprite);
+//        animation.setStartDelay(200);
+//        animation.setDuration(2000);
+////        animation.setRepeatCount(Animation.INFINITE);
+//        animation.start();
+    }
+
+    //Global sx, sy for randomMove; to remember the previous speed
     private int sx = 90, sy = 90;
 
+    /**
+     * set in a new speed value, when meet the border
+     *
+     * @param thesprite
+     */
     private void randomMove(Sprite thesprite) {
         int borderX = 600;
         int borderY = 1000;
@@ -105,73 +210,6 @@ public class TitleScreen extends State {
         }
         if (sx != 0 || sy != 0) {
             thesprite.setSpeed(sx, sy);
-        }
-    }
-
-    public void draw(Canvas canvas) {
-        backSprite.draw(canvas);
-        westWall.draw(canvas);
-        asprite.draw(canvas);
-        bsprite.draw(canvas);
-        canvas.drawText(string, 20, 20, postext);
-    }
-
-    public void update(float dt) {
-
-        moveto();
-        //Task 2: show position:
-        string = String.format("%2$10.1f %1$10.1f", asprite.getX(), asprite.getY());
-        randomMove(bsprite);
-        //        if (asprite.getX() >= 430) {
-        //            //            System.out.println("crash east border!" + asprite.getSpeed());
-        //            asprite.setSpeed(-asprite.getSpeed().getX(), asprite.getSpeed().getY());
-        //        } else if (asprite.collides(westWall)) // collides is true first time, 
-        // and change the object direction.
-        //        {
-        //            //            System.out.println("crash west border!");
-        //            asprite.setSpeed(-asprite.getSpeed().getX(), asprite.getSpeed().getY());
-        //        } else if (asprite.collides(
-        //                bsprite)) // This collides is judged since the above collides. First execution collides 
-        // will be
-        //        // true at the first time without any judge.
-        //        {
-        //            //            System.out.println("crash each other!");
-        //            asprite.setSpeed(-asprite.getSpeed().getX(), asprite.getSpeed().getY());
-        //            //            bsprite.setScale(-1, 1);
-        //            //            bsprite.setPosition(bsprite.getPosition().getX() + heliL.getWidth(),
-        //            //                    bsprite.getPosition().getY());
-        //            bsprite.setSpeed(-asprite.getSpeed().getX(), asprite.getSpeed().getY());
-        //        }
-        //
-        //        if (bsprite.getX() >= 530) {
-        //            //            System.out.println("crash east border!");
-        //            bsprite.setSpeed(-bsprite.getSpeed().getX(), bsprite.getSpeed().getY());
-        //        } else if (bsprite.collides(westWall)) // collides is true first time, 
-        // and change the object direction.
-        //        {
-        //            //            System.out.println("crash west border!");
-        //            bsprite.setSpeed(-bsprite.getSpeed().getX(), bsprite.getSpeed().getY());
-        //        }
-
-        direction(asprite);
-        direction(bsprite);
-
-
-        westWall.update(dt);
-        asprite.update(dt);
-        bsprite.update(dt);
-    }
-
-    /**
-     * TASK 1: direction: move right or left
-     *
-     * @param sprite
-     */
-    private void direction(Sprite sprite) {
-        if (sprite.getSpeed().getX() > 0) {
-            sprite.setView(heliR);
-        } else {
-            sprite.setView(heliL);
         }
     }
 }
