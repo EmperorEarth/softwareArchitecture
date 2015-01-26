@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import sheep.collision.CollisionListener;
 import sheep.game.Sprite;
 import sheep.game.State;
 import sheep.graphics.Image;
@@ -33,8 +34,8 @@ public class TitleScreen extends State {
         asprite = new Sprite(heliL);
         westWall = new Sprite(wallVerticalImg);
         westWall.setPosition(4, 215);
-        asprite.setPosition(300, 120);
-        bsprite.setPosition(200, 420);
+        asprite.setPosition(550, 350);
+        bsprite.setPosition(100, 100);
 
         // Animation right to left:
         addAnimationSprites();
@@ -51,7 +52,6 @@ public class TitleScreen extends State {
             }
 
             @Override public boolean onTouchUp(MotionEvent event) {
-                //                asprite.setSpeed(0, -80);
                 return false;
             }
 
@@ -60,7 +60,15 @@ public class TitleScreen extends State {
             }
         });
 
-        startAnimateSprite();
+        startAnimateSprite(0, csprite);
+        startAnimateSprite(100, dsprite);
+        startAnimateSprite(200, esprite);
+
+        asprite.addCollisionListener(new CollisionListener() {
+            @Override public void collided(Sprite sprite, Sprite sprite2) {
+                asprite.setSpeed(-x * ((float) Math.random() * 8), -y * ((float) Math.random() * 8));
+            }
+        });
     }
 
     /**
@@ -77,9 +85,9 @@ public class TitleScreen extends State {
         csprite.draw(canvas);
         dsprite.draw(canvas);
         esprite.draw(canvas);
-//        fsprite.draw(canvas);
-//        gsprite.draw(canvas);
-//        imageView.draw(canvas);
+        //        fsprite.draw(canvas);
+        //        gsprite.draw(canvas);
+        //        imageView.draw(canvas);
 
         canvas.drawText(string, 20, 20, postext);
     }
@@ -98,7 +106,7 @@ public class TitleScreen extends State {
 
         direction(asprite);
         direction(bsprite);
-
+        collisionHandle();
         westWall.update(dt);
         asprite.update(dt);
         bsprite.update(dt);
@@ -106,8 +114,8 @@ public class TitleScreen extends State {
         csprite.update(dt);
         dsprite.update(dt);
         esprite.update(dt);
-//        fsprite.update(dt);
-//        gsprite.update(dt);
+        //        fsprite.update(dt);
+        //        gsprite.update(dt);
     }
 
     /**
@@ -152,36 +160,54 @@ public class TitleScreen extends State {
 
     /**
      * TASK 3 animation
+     * <p/>
+     * * * init animation sprite
      */
     private void addAnimationSprites() {
-        csprite = new Sprite(heliL);
-        dsprite = new Sprite(heliL);
-        esprite = new Sprite(heliL);
-//        fsprite = new Sprite(heliL);
-//        gsprite = new Sprite(heliL);
+        csprite = new Sprite();
+        dsprite = new Sprite();
+        esprite = new Sprite();
+        //        fsprite = new Sprite(heliL);
+        //        gsprite = new Sprite(heliL);
 
-        csprite.setPosition(128, 128);
-        dsprite.setPosition(354, 128);
-        esprite.setPosition(590, 128);
-//        fsprite.setPosition(512, 428);
-//        gsprite.setPosition(640, 528);
+        csprite.setPosition(28, 128);
+        dsprite.setPosition(254, 128);
+        esprite.setPosition(490, 128);
+        //        fsprite.setPosition(512, 428);
+        //        gsprite.setPosition(640, 528);
     }
 
-    private void startAnimateSprite() {
-//        Handler handler = new Handler();
-//        handler.postDelayed(,1000);
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override public void run() {
-
+    /**
+     * TASK 3 start animation
+     *
+     * @param delayMillisecond
+     * @param sprite
+     */
+    private void startAnimateSprite(int delayMillisecond, final Sprite sprite) {
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                sprite.setView(heliL);
+                try {
+                    Thread.sleep(100);
+                    sprite.setView(null);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        };
-//        ObjectAnimator animation = new ObjectAnimator();
-//        animation.setObjectValues(csprite,dsprite,esprite);
-//        animation.setStartDelay(200);
-//        animation.setDuration(2000);
-////        animation.setRepeatCount(Animation.INFINITE);
-//        animation.start();
+        }, delayMillisecond, 300);
+    }
+
+    private void collisionHandle() {
+        if (asprite.collides(bsprite)) {
+            sx = (int) -(sx * Math.random() * 6);
+            sy = (int) -(sy * Math.random() * 6);
+        }
+//        if (bsprite.collides(csprite) || bsprite.collides(dsprite) || bsprite.collides(esprite)) {
+//            System.out.println("cde");
+//            sx = (int) -(sx * Math.random() * 6);
+//            sy = (int) -(sy * Math.random() * 6);
+//        }
     }
 
     //Global sx, sy for randomMove; to remember the previous speed
@@ -212,4 +238,5 @@ public class TitleScreen extends State {
             thesprite.setSpeed(sx, sy);
         }
     }
+
 }
