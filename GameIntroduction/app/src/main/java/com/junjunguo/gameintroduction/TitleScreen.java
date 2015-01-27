@@ -68,13 +68,13 @@ public class TitleScreen extends State {
         startAnimateSprite(200, esprite);
 
         System.out.println("stat");
-        asprite.addCollisionListener(new CollisionListener() {
-            @Override public void collided(Sprite sprite, Sprite sprite2) {
-                //                collisionHandle(asprite);
-                System.out.println("a sp collisions");
-                asprite.setSpeed((float) -(Math.random() * 100), (float) -(Math.random() * 100));
-            }
-        });
+        //        asprite.addCollisionListener(new CollisionListener() {
+        //            @Override public void collided(Sprite sprite, Sprite sprite2) {
+        //                //                collisionHandle(asprite);
+        //                System.out.println("a sp collisions");
+        //                asprite.setSpeed((float) -(Math.random() * 100), (float) -(Math.random() * 100));
+        //            }
+        //        });
         bsprite.addCollisionListener(new CollisionListener() {
             @Override public void collided(Sprite sprite, Sprite sprite2) {
                 //                collisionHandle(bsprite);
@@ -229,10 +229,13 @@ public class TitleScreen extends State {
         //                sprite.setSpeed((float) -(sprite.getSpeed().getX() * Math.random() * 6),
         //                (float) -(sprite.getSpeed().getY() * Math.random() * 6));
         //        return sprite;
-        if (asprite.collides(bsprite) || asprite.collides(fsprite)) {
-            asprite.setSpeed(100, 100);
+        if (asprite.collides(bsprite)) {
+            asprite.setSpeed(bsprite.getSpeed().getX() * 5, bsprite.getSpeed().getY() * 6);
             //            asprite.setSpeed((float) -(asprite.getSpeed().getX() * Math.random() * 6),
             //                    (float) -(asprite.getSpeed().getY() * Math.random() * 6));
+        }
+        if (asprite.collides(fsprite)) {
+            asprite.setSpeed(fsprite.getSpeed().getX() * 5, fsprite.getSpeed().getY() * 6);
         }
         if (bsprite.collides(fsprite)) {
             bsprite.setSpeed((float) -(bsprite.getSpeed().getX() * Math.random() * 5),
