@@ -35,7 +35,7 @@ public class TitleScreen extends State {
         asprite = new Sprite(heliL);
         westWall = new Sprite(wallVerticalImg);
         westWall.setPosition(4, 215);
-        asprite.setPosition(550, 350);
+        asprite.setPosition(350, 550);
         bsprite.setPosition(100, 100);
         bsprite.setSpeed(50, 50);
         // Animation right to left:
@@ -80,8 +80,8 @@ public class TitleScreen extends State {
                 //                collisionHandle(bsprite);
                 System.out.println("b sp collisions");
 
-                bsprite.setSpeed((float) -(bsprite.getSpeed().getX() * (Math.random() * 2)),
-                        (float) -(bsprite.getSpeed().getY() * (Math.random() * 2)));
+                //                bsprite.setSpeed((float) -(bsprite.getSpeed().getX() * (Math.random() * 2)),
+                //                        (float) -(bsprite.getSpeed().getY() * (Math.random() * 2)));
             }
         });
         fsprite.addCollisionListener(new CollisionListener() {
@@ -89,8 +89,8 @@ public class TitleScreen extends State {
                 //                collisionHandle(fsprite);
                 System.out.println("f sp collisions");
 
-                fsprite.setSpeed((float) -(fsprite.getSpeed().getX() * (Math.random() * 2)),
-                        (float) -(fsprite.getSpeed().getY() * (Math.random() * 2)));
+                //                fsprite.setSpeed((float) -(fsprite.getSpeed().getX() * (Math.random() * 2)),
+                //                        (float) -(fsprite.getSpeed().getY() * (Math.random() * 2)));
             }
         });
     }
@@ -200,7 +200,7 @@ public class TitleScreen extends State {
         dsprite.setPosition(254, 128);
         esprite.setPosition(490, 128);
         fsprite.setPosition(512, 428);
-        fsprite.setSpeed(((float) Math.random() * 100), ((float) Math.random() * 100));
+        fsprite.setSpeed(((float) Math.random() * 10), ((float) Math.random() * 10));
         //        gsprite.setPosition(640, 528);
     }
 
@@ -229,22 +229,26 @@ public class TitleScreen extends State {
         //                sprite.setSpeed((float) -(sprite.getSpeed().getX() * Math.random() * 6),
         //                (float) -(sprite.getSpeed().getY() * Math.random() * 6));
         //        return sprite;
+
+        float asx, asy, bsx, bsy, fsx, fsy;
+        asx = asprite.getSpeed().getX();
+        asy = asprite.getSpeed().getY();
+        bsx = bsprite.getSpeed().getX();
+        bsy = bsprite.getSpeed().getY();
+        fsx = fsprite.getSpeed().getX();
+        fsy = fsprite.getSpeed().getY();
         if (asprite.collides(bsprite)) {
-            bsprite.setSpeed((float) (asprite.getSpeed().getX() * (Math.random() * 2 + 1)),
-                    (float) (asprite.getSpeed().getY() * (Math.random() * 2 + 1)));
-            asprite.setSpeed(-asprite.getSpeed().getX() * 9, -asprite.getSpeed().getY() * 9);
+
+            bsprite.setSpeed(asx * ((float) Math.random() * 2 + 1), asy * ((float) Math.random() * 3 + 1));
+            asprite.setSpeed(bsx * ((float) Math.random() * 20 + 1), bsy * ((float) Math.random() * 20 + 1));
         }
         if (asprite.collides(fsprite)) {
-            //            asprite.setSpeed(fsprite.getSpeed().getX() * 2, fsprite.getSpeed().getY() * 3);
-            fsprite.setSpeed((float) (asprite.getSpeed().getX() * (Math.random() * 2 + 1)),
-                    (float) (asprite.getSpeed().getY() * (Math.random() * 2 + 1)));
-            asprite.setSpeed(-asprite.getSpeed().getX() * 9, -asprite.getSpeed().getY() * 9);
+            fsprite.setSpeed(asx * ((float) Math.random() * 2 + 1), asy * ((float) Math.random() * 2 + 1));
+            asprite.setSpeed(fsx * ((float) Math.random() * 20 + 1), fsy * ((float) Math.random() * 20 + 1));
         }
         if (bsprite.collides(fsprite)) {
-            bsprite.setSpeed((float) -(bsprite.getSpeed().getX() * (Math.random() * 2 + 1)),
-                    (float) -(bsprite.getSpeed().getY() * (Math.random() * 2 + 1)));
-            fsprite.setSpeed((float) -(fsprite.getSpeed().getX() * (Math.random() * 2 + 1)),
-                    (float) -(fsprite.getSpeed().getY() * (Math.random() * 2 + 1)));
+            bsprite.setSpeed(fsx * ((float) Math.random() * 2 + 1), fsy * ((float) Math.random() * 2 + 1));
+            fsprite.setSpeed(bsx * ((float) Math.random() * 2 + 1), bsy * ((float) Math.random() * 3 + 1));
         }
     }
 
