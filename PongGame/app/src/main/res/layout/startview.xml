@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                tools:context=".MainActivity"
+                android:id="@+id/startView_layout"
+                android:background="@color/pong_bg">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1 player"
+        android:layout_marginBottom="30dp"
+        android:onClick="active1player"
+        android:layout_centerInParent="true"
+        android:width="100dp"
+        android:background="@drawable/custom_button"
+        android:id="@+id/btn_1player"/>
+    
+    <TextView
+        android:text="@string/pong_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/start_view_layout_pong"
+        android:textColor="@color/pong_text"
+        android:layout_above="@id/btn_1player"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:textSize="40dp"
+        android:autoText="true"/>
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_1player"
+        android:onClick="active2player"
+        android:width="100dp"
+        android:background="@drawable/custom_button"
+        android:layout_centerHorizontal="true"
+        android:text="2 players"
+        android:id="@+id/btn_2player"/>
+
+</RelativeLayout>

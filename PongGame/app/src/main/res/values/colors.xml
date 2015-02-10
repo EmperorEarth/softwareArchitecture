@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="pong_bg">#162B00</color>
+    <color name="pong_text">#89CC41</color>
+    <color name="pong_head">#80CC2E</color>
+    <color name="pong_text2">#6BBB15</color>
+    <color name="pong_head2">#547234</color>
+</resources>
