@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import sheep.game.Game;
@@ -13,6 +14,9 @@ import sheep.game.Game;
 public class Choice1Controller extends Activity {
     private int challenging;
     private TextView textView;
+    private GameController gameController;
+    private RadioButton touch;
+    private RadioButton sensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,34 +24,65 @@ public class Choice1Controller extends Activity {
         setContentView(R.layout.choice1view);
         challenging = 1;
         textView = (TextView) findViewById(R.id.game_challenging_value);
+        gameController = MainModel.getInstance();
+        touch = (RadioButton) findViewById(R.id.radiobtn_touch);
+        sensor = (RadioButton) findViewById(R.id.radiobtn_sensor);
     }
 
+
     public void startGameC1(View view) {
-        MainModel.setBallSpeed(100 * challenging, 100 * challenging);
         activeGameScreen();
     }
 
     public void challengingValueUp(View view) {
         if (challenging < 9) {
             challenging++;
-            textView.setText(challenging);
+            textView.setText(challenging + "");
         }
     }
 
     public void challengingValueDown(View view) {
         if (challenging > 1) {
             challenging--;
-            textView.setText(challenging);
+            textView.setText(challenging + "");
         }
-
     }
 
+    /**
+     * start to run game and move to game screen
+     */
     private void activeGameScreen() {
+        gameController.setSinglePlayer(true);
+        gameController.setTouchControl(touch.isChecked());
+        gameController.setChallenging(challenging);
         Game game = SingletonGame.getInstance(this, null);
         game.pushState(new PongScreen(getApplicationContext()));
         setContentView(game);
+    }
 
-
+    /**
+     * choose sensor or touch control
+     *
+     * @param view
+     */
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+        // Check which radio button was clicked
+        switch (view.getId()) {
+            case R.id.radiobtn_sensor:
+                if (checked) {
+                    touch.setChecked(false);
+                    sensor.setChecked(true);
+                    break;
+                }
+            case R.id.radiobtn_touch:
+                if (checked) {
+                    touch.setChecked(true);
+                    sensor.setChecked(false);
+                    break;
+                }
+        }
     }
 
     @Override

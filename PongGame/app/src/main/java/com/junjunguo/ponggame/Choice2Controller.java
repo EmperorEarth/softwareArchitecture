@@ -5,30 +5,53 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import sheep.game.Game;
 
 
 public class Choice2Controller extends Activity {
+    private int challengingT = 1;
+    private TextView textView;
+    private GameController gameController;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choice2view);
+        textView = (TextView) findViewById(R.id.game2_challenging_value);
+        gameController = MainModel.getInstance();
     }
 
     public void startGameC2(View view) {
         activeGameScreen();
-
     }
 
     private void activeGameScreen() {
+        gameController.setSinglePlayer(false);
+        gameController.setTouchControl(true);
+        gameController.setChallenging(challengingT);
         Game game = SingletonGame.getInstance(this, null);
         // get screen size:
         game.pushState(new PongScreen(getApplicationContext()));
         setContentView(game);
     }
 
+    public void challengingValueUp(View view) {
+        if (challengingT < 6) {
+            challengingT++;
+            textView.setText(challengingT + "");
+        }
+    }
+
+    public void challengingValueDown(View view) {
+        if (challengingT > 1) {
+            challengingT--;
+            textView.setText(challengingT + "");
+        }
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -31,11 +31,25 @@ Implementation:
             return instance;
         }
     }
+    
+    public class MainModel {
+        private static GameController instance = null;
+
+        public static GameController getInstance() {
+            if (instance == null) {
+                instance = new GameController();
+            }
+            return instance;
+        }
+    }
 ```
 
 Singleton pattern in Pong Game:
 - do not need to create a new instance when player pause the game
 - use the same object to ensure the game continual after the pause.
+- easier to handle and manage data by use only one instance
+- only need build one Game in Pong
+- only need one GameController for Pong, and it is easier to update data.
 
 Observer pattern
 --

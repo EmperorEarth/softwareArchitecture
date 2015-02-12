@@ -15,17 +15,20 @@
         android:width="200dp"
         android:layout_centerInParent="true"
         android:background="@drawable/custom_button"
+        android:onClick="onRadioButtonClicked"
         android:layout_marginBottom="30dp"/>
 
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TOUCH CONTROL"
+        android:checked="true"
         android:id="@+id/radiobtn_touch"
         android:layout_above="@id/radiobtn_sensor"
         android:layout_centerHorizontal="true"
         android:width="200dp"
         android:layout_marginBottom="30dp"
+        android:onClick="onRadioButtonClicked"
         android:background="@drawable/custom_button"/>
 
     <TextView
@@ -78,28 +81,29 @@
             android:layout_height="40dp"/>
 
         <Button
-            android:text="<"
             android:background="@drawable/custom_button"
+            android:text="@string/btn_left_sign"
             android:layout_width="40dp"
             android:id="@+id/game_challenging_value_down"
             android:layout_height="40dp"
-            android:onClick="challengingValueUp"/>
+            android:onClick="challengingValueDown"/>
 
         <TextView
             android:layout_width="40dp"
             android:gravity="center"
             android:textColor="@color/pong_bg"
             android:id="@+id/game_challenging_value"
+            android:editable="true"
             android:text="1"
             android:layout_height="40dp"/>
 
         <Button
-            android:text=">"
+            android:text="@string/btn_right_sign"
             android:background="@drawable/custom_button"
             android:layout_width="40dp"
             android:id="@+id/game_challenging_value_up"
             android:layout_height="40dp"
-            android:onClick="challengingValueDown"/>
+            android:onClick="challengingValueUp"/>
 
         <TextView
             android:layout_width="40dp"

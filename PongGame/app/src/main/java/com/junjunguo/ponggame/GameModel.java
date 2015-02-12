@@ -8,7 +8,55 @@ public class GameModel {
             racketDowny, racketUpSpeedX, racketUpSpeedY, racketDownSpeedX, racketDownSpeedY;
     private static int scoreDown, scoreUp;
     private static String resultUp, resultDown;
-    private static int screenX, screenY;
+    private static int screenX;
+    private static int screenY;
+    private static int touchUpx;
+    private static int touchDownx;
+
+    public static String stringValues() {
+        return "Test{" +
+                "speedX=" + speedX +
+                ", speedY=" + speedY +
+                ", upwall=" + upwall +
+                ", downwall=" + downwall +
+                ", leftwall=" + leftwall +
+                ", rightwall=" + rightwall +
+                ", racketUpx=" + racketUpx +
+                ", racketUpy=" + racketUpy +
+                ", racketDownx=" + racketDownx +
+                ", racketDowny=" + racketDowny +
+                ", racketUpSpeedX=" + racketUpSpeedX +
+                ", racketUpSpeedY=" + racketUpSpeedY +
+                ", racketDownSpeedX=" + racketDownSpeedX +
+                ", racketDownSpeedY=" + racketDownSpeedY +
+                ", scoreDown=" + scoreDown +
+                ", scoreUp=" + scoreUp +
+                ", resultUp='" + resultUp + '\'' +
+                ", resultDown='" + resultDown + '\'' +
+                ", screenX=" + screenX +
+                ", screenY=" + screenY +
+                ", touchUpx=" + touchUpx +
+                ", touchDownx=" + touchDownx +
+                '}';
+    }
+
+    public static int getTouchUpx() {
+        return touchUpx;
+    }
+
+    public static void setTouchUpx(int touchUpx) {
+        GameModel.touchUpx = touchUpx;
+    }
+
+
+    public static int getTouchDownx() {
+        return touchDownx;
+    }
+
+    public static void setTouchDownx(int touchDownx) {
+        GameModel.touchDownx = touchDownx;
+    }
+
 
     public static float getSpeedX() {
         return speedX;
@@ -169,4 +217,6 @@ public class GameModel {
     public static void setScreenY(int screenY) {
         GameModel.screenY = screenY;
     }
+
+
 }
