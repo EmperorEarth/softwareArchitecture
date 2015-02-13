@@ -4,6 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.view.MotionEvent;
 
 import sheep.game.Sprite;
@@ -14,8 +18,8 @@ import sheep.input.TouchListener;
 /**
  * Created by GuoJunjun on 10/02/15.
  */
-public class PongScreen extends State {
-
+public class PongScreen extends State implements SensorEventListener {
+    private Context context;
     private Paint paint;
     private Image ballImg = new Image(R.drawable.ball);
     private Image racketImg = new Image(R.drawable.rocket);
@@ -24,17 +28,18 @@ public class PongScreen extends State {
     private static Sprite racketDown;
     private static Sprite ball;
     private static Sprite bg;
-    //    private SensorManager mSensorManager;
-    //    private Sensor mSensorAccelerator;
+    private SensorManager mSensorManager;
+    private Sensor mSensorAccelerator;
     private GameController gameController;
     private static int racketDownHitCounter = 0;
 
     public PongScreen(Context context) {
+        this.context = context;
         gameController = MainModel.getInstance();
         gameController.initGameModel();
-        //        mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        //        mSensorAccelerator = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        //        mSensorManager.registerListener(this, mSensorAccelerator, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        mSensorAccelerator = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(this, mSensorAccelerator, SensorManager.SENSOR_DELAY_NORMAL);
         bg = new Sprite(bgImg);
         racketUp = new Sprite(racketImg);
         racketDown = new Sprite(racketImg);
@@ -70,12 +75,13 @@ public class PongScreen extends State {
         racketBallHandler();
         gameController.hitWallHandler();
         ball.setSpeed(GameModel.getSpeedX(), GameModel.getSpeedY());
+        if (gameController.isSinglePlayer()) {
+            gameController.autoUpRacket();
+        }
         if (gameController.isTouchControl()) {
             gameController.racketdownTouchController();
             if (!gameController.isSinglePlayer()) {
                 gameController.racketupTouchController();
-            } else {
-                gameController.autoUpRacket();
             }
         }
     }
@@ -99,38 +105,36 @@ public class PongScreen extends State {
         }
     }
 
+    @Override public void onSensorChanged(SensorEvent event) {
+        if (!gameController.isTouchControl()) {
+            float y = event.values[1];
+            float z = event.values[2];
 
-    //    @Override public void onSensorChanged(SensorEvent event) {
-    //        float x = event.values[0];
-    //        float z = event.values[2];
-    //
-    //        float ax, az, anglexz;
-    //        ax = x;
-    //        az = z;
-    //
-    //        anglexz = (float) (Math.atan2(ax, az) / (Math.PI / 180));
-    //        // rocket control :
-    //        float angle = anglexz;
-    //        if (racketDown.getPosition().getX() <= GameModel.getLeftwall() - 10) {
-    //            if (angle > 0) {
-    //                racketDown.setSpeed(30 * angle, 0);
-    //            } else {
-    //                racketDown.setSpeed(0, 0);
-    //            }
-    //        } else if (racketDown.getPosition().getX() >= GameModel.getRightwall() + 10) {
-    //            if (angle < 0) {
-    //                racketDown.setSpeed(30 * angle, 0);
-    //            } else {
-    //                racketDown.setSpeed(0, 0);
-    //            }
-    //        } else {
-    //            racketDown.setSpeed(30 * angle, 0);
-    //        }
-    //    }
-    //
-    //    @Override public void onAccuracyChanged(Sensor sensor, int accuracy) {
-    //
-    //    }
+            float angle = (float) (Math.atan2(y, z) / (Math.PI / 180));
+            // rocket control : move speed according to angle rate bigger angle mover faster (angle rate not beyond 10)
+            float anglerate = (Math.abs(angle) < 10 ? angle : (angle > 0 ? 10 : -10));
+            GameModel.setRacketDownSpeedX(20 * gameController.getChallenging() * anglerate);
+            if (racketDown.getPosition().getX() <= GameModel.getLeftwall() - 10) {
+                if (angle > 0) {
+                    racketDown.setSpeed(GameModel.getRacketDownSpeedX(), GameModel.getRacketDownSpeedY());
+                } else {
+                    racketDown.setSpeed(0, 0);
+                }
+            } else if (racketDown.getPosition().getX() >= GameModel.getRightwall() + 10) {
+                if (angle < 0) {
+                    racketDown.setSpeed(GameModel.getRacketDownSpeedX(), GameModel.getRacketDownSpeedY());
+                } else {
+                    racketDown.setSpeed(0, 0);
+                }
+            } else {
+                racketDown.setSpeed(GameModel.getRacketDownSpeedX(), GameModel.getRacketDownSpeedY());
+            }
+        }
+    }
+
+    @Override public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
 
 
     public static Sprite getBall() {
@@ -168,6 +172,7 @@ public class PongScreen extends State {
             }
         });
     }
+
 }
 
 

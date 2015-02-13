@@ -40,8 +40,7 @@ public class GameController {
     private void initSinglePlayer() {
         GameModel.setRacketUpSpeedX(0);
         GameModel.setRacketUpSpeedY(0);
-        setBallSpeed(100 * getChallenging(), 100 * getChallenging());
-        System.out.println("---------------  initSinglePlayer");
+        setBallSpeed(60 * getChallenging(), 60 * getChallenging());
     }
 
     private void initTwoPlayers() {
@@ -65,8 +64,8 @@ public class GameController {
             } else {
                 directiony = -1;
             }
-            setBallSpeed((100 * getChallenging() + total * 5) * directionx,
-                    (100 * getChallenging() + total * 5) * directiony);
+            setBallSpeed((60 * getChallenging() + total * 5) * directionx,
+                    (60 * getChallenging() + total * 5) * directiony);
         }
     }
 
@@ -130,22 +129,19 @@ public class GameController {
     public void autoUpRacket() {
         if (PongScreen.getBall().getSpeed().getY() < 0) {
             if (PongScreen.getRacketUp().getPosition().getX() < PongScreen.getBall().getPosition().getX()) {
-                GameModel.setRacketUpSpeedX(Math.abs(GameModel.getRacketUpSpeedX()));
+                GameModel.setRacketUpSpeedX(60 * getChallenging());
                 PongScreen.getRacketUp().setSpeed(GameModel.getRacketUpSpeedX(), GameModel.getRacketUpSpeedY());
-                System.out.println(
-                        "------------- PongScreen.getRacketUp().getPosition().getX() < PongScreen.getBall()" +
-                                ".getPosition().getX()");
             } else if (PongScreen.getRacketUp().getPosition().getX() > PongScreen.getBall().getPosition().getX()) {
-                GameModel.setRacketUpSpeedX(-Math.abs(GameModel.getRacketUpSpeedX()));
+                GameModel.setRacketUpSpeedX(-60 * getChallenging());
                 PongScreen.getRacketUp().setSpeed(GameModel.getRacketUpSpeedX(), GameModel.getRacketUpSpeedY());
             } else {
                 PongScreen.getRacketUp().setSpeed(0, 0);
             }
         } else if (PongScreen.getRacketUp().getPosition().getX() > GameModel.getScreenX() / 2) {
-            GameModel.setRacketUpSpeedX(-Math.abs(GameModel.getRacketUpSpeedX()));
+            GameModel.setRacketUpSpeedX(-60 * getChallenging());
             PongScreen.getRacketUp().setSpeed(GameModel.getRacketUpSpeedX(), GameModel.getRacketUpSpeedY());
         } else if (PongScreen.getRacketUp().getPosition().getX() < GameModel.getScreenX() / 2) {
-            GameModel.setRacketUpSpeedX(Math.abs(GameModel.getRacketUpSpeedX()));
+            GameModel.setRacketUpSpeedX(60 * getChallenging());
             PongScreen.getRacketUp().setSpeed(GameModel.getRacketUpSpeedX(), GameModel.getRacketUpSpeedY());
         } else {
             PongScreen.getRacketUp().setSpeed(0, 0);
