@@ -9,5 +9,7 @@
     <string name="title_activity_choice2_controller">choice2Controller</string>
     <string name="btn_left_sign"><![CDATA[<]]></string>
     <string name="btn_right_sign"><![CDATA[>]]></string>
+    <string name="title_activity_run_game">runGameActivity</string>
+    <string name="title_activity_result">Result</string>
 
 </resources>

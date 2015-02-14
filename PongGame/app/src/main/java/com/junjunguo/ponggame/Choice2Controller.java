@@ -1,13 +1,12 @@
 package com.junjunguo.ponggame;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import sheep.game.Game;
 
 
 public class Choice2Controller extends Activity {
@@ -31,11 +30,9 @@ public class Choice2Controller extends Activity {
     private void activeGameScreen() {
         gameController.setSinglePlayer(false);
         gameController.setTouchControl(true);
-        gameController.setChallenging(challengingT);
-        Game game = SingletonGame.getInstance(this, null);
-        // get screen size:
-        game.pushState(new PongScreen(getApplicationContext()));
-        setContentView(game);
+        gameController.setChallenging((challengingT + 1) / 2);
+        Intent intent = new Intent(this, RunGameActivity.class);
+        startActivity(intent);
     }
 
     public void challengingValueUp(View view) {

@@ -1,5 +1,7 @@
 package com.junjunguo.ponggame;
 
+import android.content.Intent;
+
 /**
  * Created by GuoJunjun on 09/02/15.
  */
@@ -9,6 +11,7 @@ public class GameController {
     private boolean playSound;
     private boolean touchControl;
     private int challenging;
+    public static final String EXTRAMESSAGE = "WINNER";
 
     /**
      * init game values before start
@@ -29,7 +32,6 @@ public class GameController {
         initRacketUp();
         initRacketDown();
 
-        System.out.println(toString() + "----------------" + GameModel.stringValues());
         if (isSinglePlayer()) {
             initSinglePlayer();
         } else {
@@ -40,7 +42,7 @@ public class GameController {
     private void initSinglePlayer() {
         GameModel.setRacketUpSpeedX(0);
         GameModel.setRacketUpSpeedY(0);
-        setBallSpeed(60 * getChallenging(), 60 * getChallenging());
+        setBallSpeed(200 * getChallenging(), 200 * getChallenging());
     }
 
     private void initTwoPlayers() {
@@ -64,8 +66,8 @@ public class GameController {
             } else {
                 directiony = -1;
             }
-            setBallSpeed((60 * getChallenging() + total * 5) * directionx,
-                    (60 * getChallenging() + total * 5) * directiony);
+            setBallSpeed((200 * getChallenging() + total * 5) * directionx,
+                    (200 * getChallenging() + total * 5) * directiony);
         }
     }
 
@@ -122,7 +124,6 @@ public class GameController {
         GameModel.setRacketDowny(GameModel.getScreenY() - 100);
     }
 
-
     /**
      * automatic move up side racket
      */
@@ -176,12 +177,18 @@ public class GameController {
             GameModel.setResultDown(GameModel.getScoreDown() + " WIN !");
             PongScreen.getBall().setSpeed(0, 0);
             PongScreen.getBall().setPosition(GameModel.getScreenX() / 2, GameModel.getScreenY() / 2);
-            //            startPong();
+            Intent intent = new Intent(PongScreen.getContext(), Result.class);
+            intent.putExtra(EXTRAMESSAGE, GameModel.getScoreUp() + "\n\n" + GameModel.getScoreDown() + "\n\nWIN");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PongScreen.getContext().startActivity(intent);
         } else if (GameModel.getScoreUp() >= 21) {
             GameModel.setResultUp(" WIN !" + GameModel.getScoreUp());
             PongScreen.getBall().setSpeed(0, 0);
             PongScreen.getBall().setPosition(GameModel.getScreenX() / 2, GameModel.getScreenY() / 2);
-            //            startPong();
+            Intent intent = new Intent(PongScreen.getContext(), Result.class);
+            intent.putExtra(EXTRAMESSAGE, "WIN\n\n" + GameModel.getScoreUp() + "\n\n:\n\n" + GameModel.getScoreDown());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PongScreen.getContext().startActivity(intent);
         }
     }
 

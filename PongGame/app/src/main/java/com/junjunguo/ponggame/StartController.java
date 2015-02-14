@@ -21,6 +21,9 @@ public class StartController extends ActionBarActivity {
         display.getSize(size);
         GameModel.setScreenX(size.x);
         GameModel.setScreenY(size.y);
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
     }
 
     /**

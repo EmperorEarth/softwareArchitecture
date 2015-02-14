@@ -1,14 +1,13 @@
 package com.junjunguo.ponggame;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
-import sheep.game.Game;
 
 
 public class Choice1Controller extends Activity {
@@ -28,7 +27,6 @@ public class Choice1Controller extends Activity {
         touch = (RadioButton) findViewById(R.id.radiobtn_touch);
         sensor = (RadioButton) findViewById(R.id.radiobtn_sensor);
     }
-
 
     public void startGameC1(View view) {
         activeGameScreen();
@@ -54,10 +52,10 @@ public class Choice1Controller extends Activity {
     private void activeGameScreen() {
         gameController.setSinglePlayer(true);
         gameController.setTouchControl(touch.isChecked());
-        gameController.setChallenging(challenging);
-        Game game = SingletonGame.getInstance(this, null);
-        game.pushState(new PongScreen(getApplicationContext()));
-        setContentView(game);
+        gameController.setChallenging((challenging + 1) / 2);
+
+        Intent intent = new Intent(this, RunGameActivity.class);
+        startActivity(intent);
     }
 
     /**

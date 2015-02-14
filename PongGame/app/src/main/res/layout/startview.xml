@@ -16,7 +16,7 @@
         android:width="100dp"
         android:background="@drawable/custom_button"
         android:id="@+id/btn_1player"/>
-    
+
     <TextView
         android:text="@string/pong_game"
         android:layout_width="wrap_content"
@@ -28,7 +28,6 @@
         android:layout_marginBottom="50dp"
         android:textSize="40dp"
         android:autoText="true"/>
-
 
     <Button
         android:layout_width="wrap_content"
