@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 
@@ -13,6 +14,7 @@ public class Choice2Controller extends Activity {
     private int challengingT = 1;
     private TextView textView;
     private GameController gameController;
+    private CheckBox sound;
 
 
     @Override
@@ -21,6 +23,7 @@ public class Choice2Controller extends Activity {
         setContentView(R.layout.choice2view);
         textView = (TextView) findViewById(R.id.game2_challenging_value);
         gameController = MainModel.getInstance();
+        sound = (CheckBox) findViewById(R.id.checkBoxSound);
     }
 
     public void startGameC2(View view) {
@@ -31,12 +34,13 @@ public class Choice2Controller extends Activity {
         gameController.setSinglePlayer(false);
         gameController.setTouchControl(true);
         gameController.setChallenging((challengingT + 1) / 2);
+        gameController.setPlaySound(sound.isChecked());
         Intent intent = new Intent(this, RunGameActivity.class);
         startActivity(intent);
     }
 
     public void challengingValueUp(View view) {
-        if (challengingT < 6) {
+        if (challengingT < 3) {
             challengingT++;
             textView.setText(challengingT + "");
         }

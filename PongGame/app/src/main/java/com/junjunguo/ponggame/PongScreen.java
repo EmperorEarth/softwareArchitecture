@@ -8,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 
 import sheep.game.Sprite;
@@ -19,8 +20,6 @@ import sheep.input.TouchListener;
  * Created by GuoJunjun on 10/02/15.
  */
 public class PongScreen extends State implements SensorEventListener {
-
-
     public static Context context;
     private Paint paint;
     private Image ballImg = new Image(R.drawable.ball);
@@ -38,9 +37,13 @@ public class PongScreen extends State implements SensorEventListener {
     private GameController gameController;
     private static int racketDownHitCounter = 0;
     private boolean hitrightwall, hitleftwall;
+    private static MediaPlayer mpwall;
+    private static MediaPlayer mpracket;
 
     public PongScreen(Context context) {
         this.context = context;
+        mpwall = MediaPlayer.create(context, R.raw.hitwall);
+        mpracket = MediaPlayer.create(context, R.raw.hitball);
         gameController = MainModel.getInstance();
         gameController.initGameModel();
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
@@ -88,6 +91,7 @@ public class PongScreen extends State implements SensorEventListener {
     }
 
     public void update(float dt) {
+        //        gameController.hitWallHandler();
         upwallSprite.update(dt);
         downwallSprite.update(dt);
         leftwallSprite.update(dt);
@@ -125,9 +129,11 @@ public class PongScreen extends State implements SensorEventListener {
      */
     private void racketBallHandler() {
         if (racketUp.collides(ball)) {
+            gameController.playSoundEffectRacket();
             GameModel.setSpeedY(-GameModel.getSpeedY());
             ball.setSpeed(GameModel.getSpeedX(), GameModel.getSpeedY() * (racketDown.getSpeed().getX() / 10));
         } else if (racketDown.collides(ball)) {
+            gameController.playSoundEffectRacket();
             racketDownHitCounter++;
             gameController.twoPlayersBallSpeed(getRacketDownHitCounter());
             GameModel.setSpeedY(-GameModel.getSpeedY());
@@ -163,22 +169,47 @@ public class PongScreen extends State implements SensorEventListener {
     }
 
     @Override public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 
 
     public static Sprite getBall() {
         return ball;
     }
+
     public static Context getContext() {
         return context;
     }
+
     public static Sprite getRacketUp() {
         return racketUp;
     }
 
     public static Sprite getRacketDown() {
         return racketDown;
+    }
+
+    public static Sprite getUpwallSprite() {
+        return upwallSprite;
+    }
+
+    public static Sprite getDownwallSprite() {
+        return downwallSprite;
+    }
+
+    public static Sprite getLeftwallSprite() {
+        return leftwallSprite;
+    }
+
+    public static Sprite getRightwallSprite() {
+        return rightwallSprite;
+    }
+
+    public static MediaPlayer getMpwall() {
+        return mpwall;
+    }
+
+    public static MediaPlayer getMpracket() {
+        return mpracket;
     }
 
     /**
