@@ -1,3 +1,9 @@
+/*
+ * Created by GuoJunjun <junjunguo.com> on 15.2.2015.
+ *
+ * This file is part of PongGame
+ */
+
 package com.junjunguo.ponggame;
 
 import android.content.Context;
@@ -36,7 +42,6 @@ public class PongScreen extends State implements SensorEventListener {
     private Sensor mSensorAccelerator;
     private GameController gameController;
     private static int racketDownHitCounter = 0;
-    private boolean hitrightwall, hitleftwall;
     private static MediaPlayer mpwall;
     private static MediaPlayer mpracket;
 
@@ -61,8 +66,6 @@ public class PongScreen extends State implements SensorEventListener {
         paint.setStyle(Paint.Style.FILL);
         paint.setTextSize(40);
         paint.setColor(Color.rgb(208, 255, 20));
-        hitleftwall = false;
-        hitrightwall = false;
         upwallSprite = new Sprite(wallHorizontal);
         downwallSprite = new Sprite(wallHorizontal);
         rightwallSprite = new Sprite(wallVertical);
@@ -110,8 +113,6 @@ public class PongScreen extends State implements SensorEventListener {
             if (!gameController.isSinglePlayer()) {
                 gameController.racketupTouchController();
             }
-        } else {
-            activesensorControl();
         }
     }
 
@@ -149,23 +150,24 @@ public class PongScreen extends State implements SensorEventListener {
             // rocket control : move speed according to angle rate bigger angle mover faster (angle rate not beyond 10)
             float anglerate = (Math.abs(angle) < 10 ? angle : (angle > 0 ? 10 : -10));
 
-            if (hitleftwall) {
-                if (angle < 0) {
-                    GameModel.setRacketDownSpeedX(0);
-                } else {
-                    GameModel.setRacketDownSpeedX(20 * gameController.getChallenging() * anglerate);
-                }
-            } else if (hitrightwall) {
+            if (racketDown.getPosition().getX() <= GameModel.getLeftwall()) {
                 if (angle > 0) {
-                    racketDown.setSpeed(0, 0);
-                } else {
                     GameModel.setRacketDownSpeedX(20 * gameController.getChallenging() * anglerate);
+                } else {
+                    GameModel.setRacketDownSpeedX(0);
+                }
+            } else if (racketDown.getPosition().getX() >= GameModel.getRightwall()) {
+                if (angle < 0) {
+                    GameModel.setRacketDownSpeedX(20 * gameController.getChallenging() * anglerate);
+                } else {
+                    GameModel.setRacketDownSpeedX(0);
                 }
             } else {
                 GameModel.setRacketDownSpeedX(20 * gameController.getChallenging() * anglerate);
             }
             racketDown.setSpeed(GameModel.getRacketDownSpeedX(), GameModel.getRacketDownSpeedY());
         }
+
     }
 
     @Override public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -186,22 +188,6 @@ public class PongScreen extends State implements SensorEventListener {
 
     public static Sprite getRacketDown() {
         return racketDown;
-    }
-
-    public static Sprite getUpwallSprite() {
-        return upwallSprite;
-    }
-
-    public static Sprite getDownwallSprite() {
-        return downwallSprite;
-    }
-
-    public static Sprite getLeftwallSprite() {
-        return leftwallSprite;
-    }
-
-    public static Sprite getRightwallSprite() {
-        return rightwallSprite;
     }
 
     public static MediaPlayer getMpwall() {
@@ -238,26 +224,6 @@ public class PongScreen extends State implements SensorEventListener {
                 return false;
             }
         });
-    }
-
-    /**
-     * sensor control the down racket: <li>indicate which wall has been hit by boolean value</li><li>set the racket *
-     * down speed to 0 if it hits the wall * </li><li>this method have to be updated all the time</li>
-     */
-    private void activesensorControl() {
-        if (racketDown.collides(rightwallSprite)) {
-            hitrightwall = true;
-            hitleftwall = false;
-            GameModel.setRacketDownSpeedX(0);
-        } else if (racketDown.collides(leftwallSprite)) {
-            hitleftwall = true;
-            hitrightwall = false;
-            GameModel.setRacketDownSpeedX(0);
-        } else {
-            hitleftwall = false;
-            hitrightwall = false;
-        }
-        racketDown.setSpeed(GameModel.getRacketDownSpeedX(), GameModel.getRacketDownSpeedY());
     }
 }
 

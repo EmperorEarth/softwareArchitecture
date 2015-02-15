@@ -1,12 +1,18 @@
+/*
+ * Created by GuoJunjun <junjunguo.com> on 15.2.2015.
+ *
+ * This file is part of PongGame
+ */
+
 package com.junjunguo.ponggame;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 
 import sheep.game.Game;
 
 
-public class RunGameActivity extends ActionBarActivity {
+public class RunGameActivity extends Activity {
 
     private Game game;
 
