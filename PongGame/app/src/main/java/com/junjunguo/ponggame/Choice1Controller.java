@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ public class Choice1Controller extends Activity {
     private GameController gameController;
     private RadioButton touch;
     private RadioButton sensor;
+    private CheckBox sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +28,7 @@ public class Choice1Controller extends Activity {
         gameController = MainModel.getInstance();
         touch = (RadioButton) findViewById(R.id.radiobtn_touch);
         sensor = (RadioButton) findViewById(R.id.radiobtn_sensor);
+        sound = (CheckBox) findViewById(R.id.checkBoxSound);
     }
 
     public void startGameC1(View view) {
@@ -33,7 +36,7 @@ public class Choice1Controller extends Activity {
     }
 
     public void challengingValueUp(View view) {
-        if (challenging < 9) {
+        if (challenging < 3) {
             challenging++;
             textView.setText(challenging + "");
         }
@@ -53,7 +56,7 @@ public class Choice1Controller extends Activity {
         gameController.setSinglePlayer(true);
         gameController.setTouchControl(touch.isChecked());
         gameController.setChallenging((challenging + 1) / 2);
-
+        gameController.setPlaySound(sound.isChecked());
         Intent intent = new Intent(this, RunGameActivity.class);
         startActivity(intent);
     }
