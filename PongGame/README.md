@@ -1,6 +1,36 @@
 Pong Game
 ==
 
+Pong icon
+![pong](files/pong.png)
+
+ [Download APK file: Pong-release.apk](http://junjunguo.com/data/pong/Pong-release.apk)
+
+Screen shots:
+- device Samsung tablet 10.1
+
+Pong start screen:
+
+![pong](files/start.png)
+
+Pong single player options menu:
+
+![pong](files/singlePlayer.png)
+
+Pong 2 players options menu:
+
+![pong](files/2players.png)
+
+Pong Game screen:
+
+![pong](files/game.png)
+
+Pong finish screen:
+
+![pong](files/finish.png)
+
+
+
 Design patterns:
 
 Singleton pattern

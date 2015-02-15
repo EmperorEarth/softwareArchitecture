@@ -1,10 +1,13 @@
+/*
+ * Created by GuoJunjun <junjunguo.com> on 15.2.2015.
+ *
+ * This file is part of PongGame
+ */
+
 package com.junjunguo.ponggame;
 
 import android.content.Intent;
 
-/**
- * Created by GuoJunjun on 09/02/15.
- */
 public class GameController {
 
     private boolean singlePlayer;
@@ -50,6 +53,7 @@ public class GameController {
         GameModel.setRacketUpSpeedY(0);
         //speed:
         touchControl = true;
+        twoPlayersBallSpeed(0);
     }
 
 
@@ -130,19 +134,19 @@ public class GameController {
     public void autoUpRacket() {
         if (PongScreen.getBall().getSpeed().getY() < 0) {
             if (PongScreen.getRacketUp().getPosition().getX() < PongScreen.getBall().getPosition().getX()) {
-                GameModel.setRacketUpSpeedX(200 * getChallenging());
+                GameModel.setRacketUpSpeedX(Math.abs(GameModel.getSpeedX()));
                 PongScreen.getRacketUp().setSpeed(GameModel.getRacketUpSpeedX(), GameModel.getRacketUpSpeedY());
             } else if (PongScreen.getRacketUp().getPosition().getX() > PongScreen.getBall().getPosition().getX()) {
-                GameModel.setRacketUpSpeedX(-200 * getChallenging());
+                GameModel.setRacketUpSpeedX(-Math.abs(GameModel.getSpeedX()));
                 PongScreen.getRacketUp().setSpeed(GameModel.getRacketUpSpeedX(), GameModel.getRacketUpSpeedY());
             } else {
                 PongScreen.getRacketUp().setSpeed(0, 0);
             }
         } else if (PongScreen.getRacketUp().getPosition().getX() > GameModel.getScreenX() / 2) {
-            GameModel.setRacketUpSpeedX(-200 * getChallenging());
+            GameModel.setRacketUpSpeedX(-Math.abs(GameModel.getSpeedX()));
             PongScreen.getRacketUp().setSpeed(GameModel.getRacketUpSpeedX(), GameModel.getRacketUpSpeedY());
         } else if (PongScreen.getRacketUp().getPosition().getX() < GameModel.getScreenX() / 2) {
-            GameModel.setRacketUpSpeedX(200 * getChallenging());
+            GameModel.setRacketUpSpeedX(Math.abs(GameModel.getSpeedX()));
             PongScreen.getRacketUp().setSpeed(GameModel.getRacketUpSpeedX(), GameModel.getRacketUpSpeedY());
         } else {
             PongScreen.getRacketUp().setSpeed(0, 0);
@@ -164,16 +168,12 @@ public class GameController {
 
         if (GameModel.getScoreDown() >= 21) {
             GameModel.setResultDown(GameModel.getScoreDown() + " WIN !");
-            //            PongScreen.getBall().setSpeed(0, 0);
-            //            PongScreen.getBall().setPosition(GameModel.getScreenX() / 2, GameModel.getScreenY() / 2);
             Intent intent = new Intent(PongScreen.getContext(), Result.class);
             intent.putExtra(EXTRAMESSAGE, GameModel.getScoreUp() + "\n\n" + GameModel.getScoreDown() + "\n\nWIN");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PongScreen.getContext().startActivity(intent);
         } else if (GameModel.getScoreUp() >= 21) {
             GameModel.setResultUp(" WIN !" + GameModel.getScoreUp());
-            //            PongScreen.getBall().setSpeed(0, 0);
-            //            PongScreen.getBall().setPosition(GameModel.getScreenX() / 2, GameModel.getScreenY() / 2);
             Intent intent = new Intent(PongScreen.getContext(), Result.class);
             intent.putExtra(EXTRAMESSAGE, "WIN\n\n" + GameModel.getScoreUp() + "\n\n:\n\n" + GameModel.getScoreDown());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -182,12 +182,14 @@ public class GameController {
     }
 
     private void ballHitUpOrDownWall() {
-        if (PongScreen.getBall().collides(PongScreen.getUpwallSprite())) {
+        if (PongScreen.getBall().getSpeed().getY() < 0 &&
+                PongScreen.getBall().getPosition().getY() <= GameModel.getUpwall()) {
             playSoundEffectWall();
             GameModel.setScoreDown(GameModel.getScoreDown() + 1);
             GameModel.setSpeedY(-GameModel.getSpeedY());
             GameModel.setResultDown(GameModel.getScoreDown() + "");
-        } else if (PongScreen.getBall().collides(PongScreen.getDownwallSprite())) {
+        } else if (PongScreen.getBall().getSpeed().getY() > 0 &&
+                PongScreen.getBall().getPosition().getY() >= GameModel.getDownwall()) {
             playSoundEffectWall();
             GameModel.setScoreUp(GameModel.getScoreUp() + 1);
             GameModel.setSpeedY(-GameModel.getSpeedY());
@@ -196,8 +198,12 @@ public class GameController {
     }
 
     private void ballHitRightOrLeftWall() {
-        if (PongScreen.getBall().collides(PongScreen.getRightwallSprite()) ||
-                PongScreen.getBall().collides(PongScreen.getLeftwallSprite())) {
+        if (PongScreen.getBall().getSpeed().getX() > 0 &&
+                PongScreen.getBall().getPosition().getX() >= GameModel.getRightwall()) {
+            playSoundEffectWall();
+            GameModel.setSpeedX(-GameModel.getSpeedX());
+        } else if (PongScreen.getBall().getSpeed().getX() < 0 &&
+                PongScreen.getBall().getPosition().getX() <= GameModel.getLeftwall()) {
             playSoundEffectWall();
             GameModel.setSpeedX(-GameModel.getSpeedX());
         }

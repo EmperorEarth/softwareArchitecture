@@ -1,3 +1,9 @@
+/*
+ * Created by GuoJunjun <junjunguo.com> on 15.2.2015.
+ *
+ * This file is part of PongGame
+ */
+
 package com.junjunguo.ponggame;
 
 import android.app.Activity;

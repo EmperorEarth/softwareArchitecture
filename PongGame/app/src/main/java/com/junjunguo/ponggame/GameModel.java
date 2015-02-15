@@ -1,8 +1,11 @@
+/*
+ * Created by GuoJunjun <junjunguo.com> on 15.2.2015.
+ *
+ * This file is part of PongGame
+ */
+
 package com.junjunguo.ponggame;
 
-/**
- * Created by GuoJunjun on 10/02/15.
- */
 public class GameModel {
     private static float speedX, speedY, upwall, downwall, leftwall, rightwall, racketUpx, racketUpy, racketDownx,
             racketDowny, racketUpSpeedX, racketUpSpeedY, racketDownSpeedX, racketDownSpeedY;
