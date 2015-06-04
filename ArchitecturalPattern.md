@@ -13,6 +13,11 @@ An architectural pattern establishes a relationship between:
 	-  A set of semantic constraints covering topology, element behavior, and interaction mechanisms
 
 
+####Architectural pattern is:
+- Package of design decisions that is found repeatedly in practice
+- Reusable structures that can be applied on construction of systems
+- Defines the element types and their forms of interaction used in solving the problem.
+
 1. Layer pattern
 --
 -  Context: All complex systems experience the need to develop and evolve portions of the system independently. Need a clear and well- documented separation of concerns, so that modules of the system may be independently developed and maintained.
@@ -116,9 +121,9 @@ that they can organize and share their services with high availability and scala
 
 10. Multi-Tier pattern
 --
--  Context:Inadistributeddeployment,thereisoftena need to distribute a system’s infrastructure into distinct subsets.
--  Problem:Howcanwesplitthesystemintoanumber of computationally independent execution structures —groups of software and hardware—connected by some communications media?
--  Solution:Theexecutionstructuresofmanysystems are organized as a set of logical groupings of components. Each grouping is termed a tier.
+-  Context:In a distributed deployment, there is often a need to distribute a system’s infrastructure into distinct subsets.
+-  Problem: How can we split the system in to a number of computationally independent execution structures —groups of software and hardware—connected by some communications media?
+-  Solution: The execution structures of many systems are organized as a set of logical groupings of components. Each grouping is termed a tier.
 
 ###Multi-Tier Solution
 -  Overview: The execution structures of many systems are organized as a set of logical groupings of components. Each grouping is termed a tier.
@@ -147,6 +152,31 @@ Relationship between Tactics and Patterns
 	-  Increase resources will help performance
 	-  Maintain multiple copies will help availability
 
+Software Structures
+--
+Three important categories of architectural structures:
+
+- Module
+- Component and Connector
+- Allocation
+
+###Architecture pattern fit the structures:
+####Module: 
+- Layered pattern.
+
+####Component-and-connector: 
+- Broker, 
+- Model-view-controller, 
+- Pipe-and-Filter, 
+- Client-Server, 
+- Peer-to- Peer, 
+- Service-Oriented architectural, 
+- Publish-Subscribe, 
+- Shared-Data pattern.
+
+####Allocation: 
+- Map-reduce 
+- Multi-tier pattern
 
 Reference
 --
